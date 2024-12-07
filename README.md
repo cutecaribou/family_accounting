@@ -1,3 +1,3 @@
 # family_accounting
 
-Мой проект.
+Мой проект. 
