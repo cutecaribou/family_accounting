@@ -5,6 +5,7 @@ __pycache__/
 .idea
 .idea/
 
+settings.json
 # C extensions
 *.so
 
