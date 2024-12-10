@@ -1,6 +1,7 @@
 import sqlalchemy as sq
 import json
 from fastapi import FastAPI
+from people import people_router
 
 
 def connect(filename: str):
@@ -26,6 +27,7 @@ def connect(filename: str):
 def main():
     engine = connect('settings.json')
     app = FastAPI()
+    app.include_router(people_router)
 
     @app.get("/")
     async def root():
