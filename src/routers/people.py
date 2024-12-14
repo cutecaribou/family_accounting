@@ -1,8 +1,8 @@
 from fastapi_utils.cbv import cbv
 from fastapi import APIRouter, Depends, FastAPI, Header, HTTPException
-from models import Person, PersonWithID
+from src.models import Person, PersonWithID
 import json
-from db_session import engine, text
+from src.db_session import engine, text
 
 people_router = APIRouter(prefix="/people")
 

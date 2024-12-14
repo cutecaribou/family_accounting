@@ -1,13 +1,15 @@
-from db_session import engine
+from src.db_session import engine
 import sqlalchemy as sq
 from fastapi import FastAPI
-from people import people_router
+from src.routers.people import people_router
+from src.routers.purchases import purchase_router
 
 
 
 def main():
     app = FastAPI()
     app.include_router(people_router)
+    app.include_router(purchase_router)
 
     @app.get("/")
     async def root():
