@@ -96,3 +96,14 @@ class PurchaseAPI:
             con.commit()
             con.close()
         return json.loads(purchase.json())
+
+    @purchase_router.delete('/{purchase_id}')
+    def delete_by_id(self, purchase_id: int):
+        with engine.connect() as con:
+            query = text("""
+                delete from purchases
+                where id = (:purchase_id)
+            """)
+            con.execute(query, parameters={'purchase_id': purchase_id})
+            con.commit()
+            con.close()
