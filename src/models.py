@@ -30,3 +30,15 @@ class PurchaseWithID(Purchase):
 
 class PurchaseWithBuyer(__PurchaseWithID):
     buyer: PersonWithID
+
+
+class Transfer(BaseModel):
+    transfer_date: date
+    amount: int
+    purchase_id: int
+    target_id: int
+    source_id: int
+
+
+class TransferWithID(Transfer):
+    transfer_id: int

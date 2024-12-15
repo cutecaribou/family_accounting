@@ -3,6 +3,7 @@ import sqlalchemy as sq
 from fastapi import FastAPI
 from src.routers.people import people_router
 from src.routers.purchases import purchase_router
+from src.routers.transfers import transfer_router
 
 
 
@@ -10,6 +11,7 @@ def main():
     app = FastAPI()
     app.include_router(people_router)
     app.include_router(purchase_router)
+    app.include_router(transfer_router)
 
     @app.get("/")
     async def root():
