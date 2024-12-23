@@ -6,7 +6,6 @@ from src.routers.purchases import purchase_router
 from src.routers.transfers import transfer_router
 
 
-
 def main():
     app = FastAPI()
     app.include_router(people_router)
