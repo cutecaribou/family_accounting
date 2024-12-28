@@ -1,6 +1,4 @@
 from custom_session import BasedSession
-import json
-from models import Person, PersonWithID
 import PyQt6.QtWidgets as qw
 import sys
 
@@ -10,12 +8,14 @@ class AddNewPersonWidget(qw.QWidget):
         self.session = session
 
         layout = qw.QVBoxLayout()
-        button = qw.QPushButton('Save person')
-        button.clicked.connect(self.save_button)
+        self.button = qw.QPushButton('Save person')
+        self.button.clicked.connect(self.save_button)
+        self.button.setDisabled(True)
 
         self.name = qw.QLineEdit()
         self.name.setMaxLength(10)
         self.name.setPlaceholderText("Введите имя")
+        self.name.textChanged.connect(self.name_changed)
 
         self.is_parent = qw.QCheckBox()
         self.is_parent.setText("is_parent")
@@ -23,10 +23,17 @@ class AddNewPersonWidget(qw.QWidget):
 
         layout.addWidget(self.name)
         layout.addWidget(self.is_parent)
-        layout.addWidget(button)
+        layout.addWidget(self.button)
 
         self.setLayout(layout)
-        # self.()
+
+
+
+    def name_changed(self):
+        if len(self.name.text()) > 0:
+            self.button.setDisabled(False)
+        else:
+            self.button.setDisabled(True)
 
     def save_button(self):
         person = {

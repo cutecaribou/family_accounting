@@ -10,14 +10,16 @@ purchase_router = APIRouter(prefix="/purchases")
 @cbv(purchase_router)
 class PurchaseAPI:
     @purchase_router.get('/')
-    def root(self, expand: bool = False):
+    def root(self, expand: bool = False, start_date: str = '0001-01-01', end_date: str = '9999-12-31'):
         purchases_list = []
         with engine.connect() as con:
             query = text("""
                 select id, purchase_date, amount, buyer_id
                 from purchases
+                where 1 = 1
+                    and purchase_date between :start_date and :end_date
             """)
-            result = con.execute(query)
+            result = con.execute(query, parameters={'start_date': start_date, 'end_date': end_date})
             if expand:
                 for row in result.mappings().all():
                     people = PeopleAPI()
@@ -26,16 +28,16 @@ class PurchaseAPI:
                         purchase_id=row['id'],
                         purchase_date=row['purchase_date'],
                         amount=row['amount'],
-                        buyer = certain_person
+                        buyer=certain_person
                     )
                     purchases_list.append(purchase)
             else:
                 for row in result.mappings().all():
                     purchase = PurchaseWithID(
-                        purchase_id = row['id'],
-                        purchase_date = row['purchase_date'],
-                        amount = row['amount'],
-                        buyer_id = row['buyer_id']
+                        purchase_id=row['id'],
+                        purchase_date=row['purchase_date'],
+                        amount=row['amount'],
+                        buyer_id=row['buyer_id']
                     )
                     purchases_list.append(purchase)
             con.close()

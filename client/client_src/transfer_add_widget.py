@@ -1,6 +1,4 @@
 from custom_session import BasedSession
-import json
-from models import Person, PersonWithID
 import PyQt6.QtWidgets as qw
 import sys
 

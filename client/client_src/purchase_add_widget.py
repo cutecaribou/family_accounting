@@ -1,13 +1,8 @@
 from custom_session import BasedSession
-import json
-from models import Person, PersonWithID
 import PyQt6.QtWidgets as qw
 from PyQt6.QtCore import QDate, Qt
 import sys
 
-# "purchase_date": "2024-12-27",
-# "amount": 0,
-# "buyer_id": 0
 
 class AddNewPurchaseWidget(qw.QWidget):
     def __init__(self, session: BasedSession):
@@ -16,15 +11,15 @@ class AddNewPurchaseWidget(qw.QWidget):
 
         layout = qw.QHBoxLayout()
         self.button = qw.QPushButton('Save purchase')
+        self.button.setDisabled(True)
         self.button.clicked.connect(self.save_button)
 
         self.calendar = qw.QCalendarWidget()
         self.calendar.setGridVisible(True)
-        # self.calendar.selectionChanged.connect(self.show_date)
 
         self.amount = qw.QSpinBox()
-        self.amount.setMinimum(1)
         self.amount.setMaximum(1000000000)
+        self.amount.valueChanged.connect(self.amount_changed)
 
         self.box = qw.QComboBox()
         self.fill_cmbx()
@@ -43,6 +38,13 @@ class AddNewPurchaseWidget(qw.QWidget):
                 self.box.addItem(elem['name'], userData=elem)
             else:
                 self.box.addItem(elem['name'], userData=elem)
+
+    def amount_changed(self):
+        if self.amount.value() > 0:
+            self.button.setDisabled(False)
+        else:
+            self.button.setDisabled(True)
+
 
     def save_button(self):
         person_id = self.box.currentData()['person_id']

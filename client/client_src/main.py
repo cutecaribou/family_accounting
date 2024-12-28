@@ -7,6 +7,7 @@ from PyQt6.QtGui import QColor, QPalette
 from person_add_widget import AddNewPersonWidget
 from transfer_add_widget import  AddNewTransferWidget
 from purchase_add_widget import AddNewPurchaseWidget
+from purchase_table_widget import PurchaseTableWitdget
 
 
 def test():
@@ -57,7 +58,7 @@ class MainWindow(qw.QMainWindow):
         tabs = qw.QTabWidget()
         tabs.setTabPosition(qw.QTabWidget.TabPosition.North)
 
-        button_table = Color('red')
+        button_table = PurchaseTableWitdget(self.session)
         # self.button_table.clicked.connect(self.activate_tab_1)
 
         add_line_button = AddNewTransferWidget(self.session)
