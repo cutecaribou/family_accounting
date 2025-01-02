@@ -8,19 +8,23 @@ class AddNewTransferWidget(qw.QWidget):
         self.session = session
 
         layout = qw.QHBoxLayout()
-        button = qw.QPushButton('Save transfer')
+        self.button = qw.QPushButton('Save transfer')
+        self.button.setDisabled(True)
+        # self.button.clicked.connect(self.save_button)
 
         self.box1 = qw.QComboBox()
         self.box2 = qw.QComboBox()
         self.box1.currentIndexChanged.connect(self.print_current_selection)
         self.box2.currentIndexChanged.connect(self.print_current_selection)
-        line = qw.QSpinBox()
-        line.setMaximum(1000000000)
+
+        self.line = qw.QSpinBox()
+        self.line.setMaximum(1000000000)
+        self.line.valueChanged.connect(self.amount_changed)
 
         layout.addWidget(self.box1)
         layout.addWidget(self.box2)
-        layout.addWidget(line)
-        layout.addWidget(button)
+        layout.addWidget(self.line)
+        layout.addWidget(self.button)
 
         self.setLayout(layout)
         self.fill_cmbx()
@@ -32,6 +36,12 @@ class AddNewTransferWidget(qw.QWidget):
                 self.box2.addItem(elem['name'], userData=elem)
             else:
                 self.box1.addItem(elem['name'], userData=elem)
+
+    def amount_changed(self):
+        if self.line.value() > 0:
+            self.button.setDisabled(False)
+        else:
+            self.button.setDisabled(True)
 
     def print_current_selection(self):
         print(self.box1.currentData())
