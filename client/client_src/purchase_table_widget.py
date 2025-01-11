@@ -2,6 +2,9 @@ from custom_session import BasedSession
 import PyQt6.QtWidgets as qw
 import PyQt6.QtGui as qg
 import PyQt6.QtCore as qc
+from transfer_add_widget import AddNewTransferWidget
+# from src.routers.transfers import transfer_router
+
 
 class CalendarSignals(qc.QObject):
     date_finalized = qc.pyqtSignal()
@@ -52,28 +55,33 @@ class MyCalendar(qw.QCalendarWidget):
 
         self.signals.date_finalized.emit()
 
-# class ButtonSignals(qc.QObject):
-#     advanced_clicked = qc.pyqtSignal(int, int, int)
 
 class MyButtonWidget(qw.QPushButton):
-    def __init__(self, text, purchase_id, position):
+    def __init__(self, text, purchase_id: int, session: BasedSession):
         super().__init__(text)
 
         self.purchase_id = purchase_id
-        self.position = position
-        print('position = ', self.position.y())
-
+        self.session = session
         self.clicked.connect(self.was_clicked)
 
     def was_clicked(self):
         print(self.purchase_id)
         context = qw.QMenu(self)
-        context.addAction(qg.QAction("test 1", self))
-        context.addAction(qg.QAction("test 2", self))
-        context.addAction(qg.QAction("test 3", self))
-        context.exec(self.pos() + self.position)
+
+        add_transfer_button = qg.QAction('Добавить перевод', self)
+        add_transfer_button.triggered.connect(self.add_transfer_clicked)
+
+        delete_purchase_button = qg.QAction('Удалить покупку', self)
+        # delete_purchase_button.triggered.connect(self.onMyToolBarButtonClick)
 
 
+        context.addAction(add_transfer_button)
+        context.addAction(delete_purchase_button)
+        context.exec(self.parent().mapToGlobal(self.geometry().bottomRight()))
+
+    def add_transfer_clicked(self):
+        self.transfer_widget = AddNewTransferWidget(self.session, self.purchase_id)
+        self.transfer_widget.show()
 
 class PurchaseTableWitdget(qw.QWidget):
     def __init__(self, session: BasedSession):
@@ -95,7 +103,7 @@ class PurchaseTableWitdget(qw.QWidget):
             self.table.setItem(idx, 0, qw.QTableWidgetItem(elem['purchase_date']))
             self.table.setItem(idx, 1, qw.QTableWidgetItem(str(elem['amount'])))
             self.table.setItem(idx, 2, qw.QTableWidgetItem(elem['buyer']['name']))
-            action_button = MyButtonWidget('...', elem['purchase_id'], self.table.pos())
+            action_button = MyButtonWidget('...', elem['purchase_id'], self.session)
             self.table.setCellWidget(idx, 3, action_button)
 
             # action_button.clicked.connect(self.actions_for_purchase)

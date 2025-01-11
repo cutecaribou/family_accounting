@@ -14,8 +14,8 @@ class PeopleAPI:
         persons_list = []
         with engine.connect() as con:
             query = text("""
-                       select id, name, is_parent
-                        from people
+                    select id, name, is_parent
+                    from people
                    """)
             result = con.execute(query)
             for row in result.mappings().all():

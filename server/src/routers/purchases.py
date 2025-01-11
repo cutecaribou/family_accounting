@@ -12,6 +12,8 @@ class PurchaseAPI:
     @purchase_router.get('/')
     def root(self, expand: bool = False, start_date: str = '0001-01-01', end_date: str = '9999-12-31'):
         purchases_list = []
+        print(f'{start_date=}')
+        print(f'{end_date=}')
         with engine.connect() as con:
             query = text("""
                 select id, purchase_date, amount, buyer_id

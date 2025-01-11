@@ -58,14 +58,14 @@ class MainWindow(qw.QMainWindow):
         tabs = qw.QTabWidget()
         tabs.setTabPosition(qw.QTabWidget.TabPosition.North)
 
-        button_table = PurchaseTableWitdget(self.session)
+        add_table_button = PurchaseTableWitdget(self.session)
         # self.button_table.clicked.connect(self.activate_tab_1)
 
-        add_line_button = AddNewTransferWidget(self.session)
         add_person_button = AddNewPersonWidget(self.session)
         add_purchase_button = AddNewPurchaseWidget(self.session)
+        add_line_button = AddNewTransferWidget(self.session)
 
-        tabs.addTab(button_table, "Табличка?")
+        tabs.addTab(add_table_button, "Таблицв")
         tabs.addTab(add_person_button, "Добавить человека")
         tabs.addTab(add_purchase_button, "Добавить покупку")
         tabs.addTab(add_line_button, "Добавить перевод")
